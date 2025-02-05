@@ -1,8 +1,8 @@
 import os
 
 import geni.portal as portal
-import geni.rspec.pg as rspec
-import geni.rspec.igext as IG
+import geni.rspec.pg as pg
+import geni.rspec.igext as ig
 
 tourDescription = """
 
@@ -133,13 +133,15 @@ node.disk_image = UBUNTU_IMG
 
 for srs_type, type_hash in DEFAULT_SRS_HASHES.items():
     cmd = "{} '{}' {}".format(SRS_DEPLOY_SCRIPT, type_hash, srs_type)
-    node.addService(rspec.Execute(shell="bash", command=cmd))
+    node.addService(pg.Execute(shell="bash", command=cmd))
 
-node.addService(rspec.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
+node.addService(pg.Execute(shell="bash", command=OPEN5GS_DEPLOY_SCRIPT))
+node.startVNC()
 
-tour = IG.Tour()
-tour.Description(IG.Tour.MARKDOWN, tourDescription)
-tour.Instructions(IG.Tour.MARKDOWN, tourInstructions)
+
+tour = ig.Tour()
+tour.Description(ig.Tour.MARKDOWN, tourDescription)
+tour.Instructions(ig.Tour.MARKDOWN, tourInstructions)
 request.addTour(tour)
 
 pc.printRequestRSpec(request)
