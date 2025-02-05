@@ -32,6 +32,7 @@ pc.defineParameter(
     typ=portal.ParameterType.BOOLEAN,
     defaultValue=False,
 )
+
 pc.defineParameter(
     name="nodetype",
     description="Type of compute node to used.",
@@ -53,7 +54,7 @@ pc.defineParameter(
     name="enable_vnc",
     description="Enable browser-based VNC server.",
     typ=portal.ParameterType.BOOLEAN,
-    defaultValue=False,
+    defaultValue=True,
     advanced=True,
 )
 
@@ -173,13 +174,18 @@ if params.deployric:
 
 node = request.RawPC("node")
 node.hardware_type = params.nodetype
-node.disk_image = UBUNTU_IMG
-node.bindRole(RoleBinding("single_node_oran"))
-node.addService(pg.Execute(shell="sh", command=HEAD_CMD))
-node.addService(pg.Execute(shell="sh", command=GALAXY_INSTALL_CMD))
-node.addService(pg.Execute(shell="sh", command=GALAXY_INSTALL_REQS_CMD))
-node.addService(pg.Execute(shell="sh", command=TAIL_CMD))
-node.startVNC()
+if params.do_deploy or params.deployric:
+    node.disk_image = UBUNTU_IMG
+    node.bindRole(RoleBinding("single_node_oran"))
+    node.addService(pg.Execute(shell="sh", command=HEAD_CMD))
+    node.addService(pg.Execute(shell="sh", command=GALAXY_INSTALL_CMD))
+    node.addService(pg.Execute(shell="sh", command=GALAXY_INSTALL_REQS_CMD))
+    node.addService(pg.Execute(shell="sh", command=TAIL_CMD))
+else:
+    node.disk_image = "urn:publicid:IDN+emulab.net+image+CyberPowder2025:srsran5gsim-built"
+
+if params.enable_vnc:
+    node.startVNC()
 
 tour = ig.Tour()
 tour.Description(ig.Tour.MARKDOWN, tourDescription)
