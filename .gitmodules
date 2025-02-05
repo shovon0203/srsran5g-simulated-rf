@@ -1,3 +1,0 @@
-[submodule "emulab-ansible-bootstrap"]
-	path = emulab-ansible-bootstrap
-	url = https://gitlab.flux.utah.edu/emulab/ansible/emulab-ansible-bootstrap.git
