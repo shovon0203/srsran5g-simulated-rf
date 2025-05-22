@@ -4,7 +4,7 @@ SRS_TYPE=$2
 BINDIR=`dirname $0`
 SRCDIR=/var/tmp
 CFGDIR=/local/repository/etc
-SRS_REPO=https://github.com/srsRAN/$SRS_TYPE
+SRS_REPO=https://github.com/shovon0203/srsRAN_Project
 
 if [ -f $SRCDIR/$SRS_TYPE-setup-complete ]; then
     echo "setup already ran; not running again"
